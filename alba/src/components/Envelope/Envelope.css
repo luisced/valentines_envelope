@@ -189,27 +189,89 @@
     transform: translate(-50%, 0);
   }
 }
+@media (max-width: 768px) {
+  :root {
+    --envelope-width: 320px;
+    --envelope-height: 230px;
+  }
+  .letter {
+    padding: 18px 10px;
+  }
+  .letter .text {
+    font-size: 0.95rem;
+  }
+  .heart {
+    width: 13px;
+    height: 13px;
+  }
+  .heart::before,
+  .heart::after {
+    width: 13px;
+    height: 13px;
+  }
+  .stamp {
+    width: 75px;
+  }
+  .btn {
+    padding: 8px 25px;
+    font-size: 1.3rem;
+  }
+}
+
 @media (max-width: 480px) {
   :root {
-    --envelope-width: 300px;
-    --envelope-height: 220px;
+    --envelope-width: 280px;
+    --envelope-height: 200px;
   }
   .letter {
     padding: 15px 8px;
   }
   .letter .text {
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
   .heart {
-    width: 12px;
-    height: 12px;
+    width: 11px;
+    height: 11px;
   }
   .heart::before,
   .heart::after {
-    width: 12px;
-    height: 12px;
+    width: 11px;
+    height: 11px;
   }
   .stamp {
-    width: 70px;
+    width: 65px;
+  }
+  .btn {
+    padding: 6px 20px;
+    font-size: 1.2rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  :root {
+    --envelope-width: 400px;
+    --envelope-height: 280px;
+  }
+  .letter {
+    padding: 25px 15px;
+  }
+  .letter .text {
+    font-size: 1.1rem;
+  }
+  .heart {
+    width: 18px;
+    height: 18px;
+  }
+  .heart::before,
+  .heart::after {
+    width: 18px;
+    height: 18px;
+  }
+  .stamp {
+    width: 100px;
+  }
+  .btn {
+    padding: 12px 35px;
+    font-size: 1.7rem;
   }
 }

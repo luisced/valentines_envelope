@@ -1,11 +1,16 @@
+.heart-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
 svg {
-    overflow: visible;
-    position: fixed;
-    top: 5vh;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100vw;
-    height: auto;
+  position: absolute;
+  top: -30%; /* This value moves the heart up. Adjust as needed */
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 svg path#line {

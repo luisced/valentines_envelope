@@ -16,6 +16,8 @@ export function ErrorPage() {
       justify-content: center;
       height: 100vh;
       background-color: var(--bg-color);
+      padding: 20px;
+      box-sizing: border-box;
     }
     .error-page img {
       max-width: 100%;
@@ -34,6 +36,24 @@ export function ErrorPage() {
     }
     .error-page button:hover {
       background-color: #a93a4f;
+    }
+    @media (max-width: 768px) {
+      .error-page img {
+        max-width: 80%;
+      }
+      .error-page button {
+        font-size: 16px;
+        padding: 8px 16px;
+      }
+    }
+    @media (max-width: 480px) {
+      .error-page img {
+        max-width: 90%;
+      }
+      .error-page button {
+        font-size: 14px;
+        padding: 6px 12px;
+      }
     }
   `;
   document.head.appendChild(style);

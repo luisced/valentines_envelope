@@ -7,7 +7,18 @@ export function ILoveYouPage() {
   const pageContainer = document.createElement("div");
   pageContainer.className = "i-love-you-page";
 
-  // Back arrow (si la necesitas, por ejemplo, posicionada en la esquina superior izquierda)
+  // Heart container (full screen)
+  const heartContainer = document.createElement("div");
+  heartContainer.className = "heart-container";
+  const heartElement = Heart();
+  heartContainer.appendChild(heartElement);
+  pageContainer.appendChild(heartContainer);
+
+  // Overlay container for back arrow and countdown
+  const overlayContainer = document.createElement("div");
+  overlayContainer.className = "overlay-container";
+
+  // Back arrow
   const backArrow = document.createElement("a");
   backArrow.href = "/";
   backArrow.className = "back-arrow";
@@ -16,21 +27,15 @@ export function ILoveYouPage() {
     e.preventDefault();
     window.location.href = "/";
   });
-  pageContainer.appendChild(backArrow);
+  overlayContainer.appendChild(backArrow);
 
-  // Contenedor del corazón
-  const heartContainer = document.createElement("div");
-  heartContainer.className = "heart-container";
-  const heartElement = Heart();
-  heartContainer.appendChild(heartElement);
-  pageContainer.appendChild(heartContainer);
-
-  // Contenedor del contador
+  // Countdown container
   const countdownContainer = document.createElement("div");
   countdownContainer.className = "countdown-wrapper";
   const countdownElement = new Countdown();
   countdownContainer.appendChild(countdownElement.render());
-  pageContainer.appendChild(countdownContainer);
+  overlayContainer.appendChild(countdownContainer);
 
+  pageContainer.appendChild(overlayContainer);
   document.body.appendChild(pageContainer);
 }
