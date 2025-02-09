@@ -1,32 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap');
-
-:root {
-  /* Color and sizing variables */
-  --primary: white;
-  --bg-color: rgb(253, 246, 236);
-  --bg-envelope-color: #f5edd1;
-  --envelope-tab: #ecdeb8;
-  --envelope-cover: #e6cfa7;
-  --shadow-color: rgba(0, 0, 0, 0.1);
-  --heart-color: #c2465d;
-  --envelope-width: 350px;
-  --envelope-height: 250px;
-}
-*, *::before, *::after {
-  box-sizing: border-box;
-}
-body {
-  margin: 0;
-  padding: 0;
-  background: var(--bg-color);
-  font-family: 'Amatic SC', cursive;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  transition: opacity 0.5s ease;
-}
-
 .container {
   display: grid;
   place-items: center;
