@@ -83,7 +83,9 @@ export function Envelope(): HTMLElement {
 
   // YES button redirect
   yesBtn.addEventListener("click", () => {
-    window.location.href = "/heart";
+    window.history.pushState({}, "", "/iloveyou");
+    const event = new Event("popstate");
+    window.dispatchEvent(event);
   });
 
   return container;

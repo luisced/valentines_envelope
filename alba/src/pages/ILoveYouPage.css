@@ -1,19 +1,49 @@
+/* Contenedor principal de la página */
 .i-love-you-page {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly; /* O space-around / flex-start con márgenes */
   align-items: center;
   min-height: 100vh;
   width: 100%;
-  overflow: hidden;
   background-color: var(--bg-color);
+  position: relative;
+  padding: 2rem 0; /* Espacio extra arriba y abajo */
 }
 
+/* Back arrow en la esquina superior izquierda */
+.back-arrow {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-size: 36px;
+  text-decoration: none;
+  color: var(--heart-color);
+  transition: transform 0.3s ease;
+}
+
+.back-arrow:hover {
+  transform: scale(1.2);
+}
+
+/* Contenedor del corazón */
 .heart-container {
   margin-bottom: 2rem;
+  position: relative;
+  z-index: 2;
 }
 
+/* Contenedor del contador */
 .countdown-wrapper {
   width: 100%;
   max-width: 600px;
+  position: relative;
+  z-index: 1;
+}
+
+/* Sobrescribir estilos absolutos del contador */
+.countdown-wrapper .wrap {
+  position: relative !important;
+  margin: 0 auto;
+  height: auto;
 }
