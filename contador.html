@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contador de Aniversario</title>
+  
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Open+Sans&display=swap" rel="stylesheet">
+  
+  <!-- FlipDown CSS -->
+  <link href="https://pbutcher.uk/flipdown/css/flipdown/flipdown.css" rel="stylesheet" />
+
+  <style>
+    /* Reset y estilos base */
+    * {
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+    body {
+      background-size: cover;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .count-down {
+      width: 550px;
+      margin: auto;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 10px;
+      text-align: center;
+    }
+    /* Opcional: si deseas un título, puedes descomentar la siguiente línea:
+    .count-down h1 {
+      font-weight: 400;
+      font-size: 3em;
+      margin-top: 0;
+      margin-bottom: 10px;
+    }
+    */
+#counter {
+  font-size: 2em; /* Aumenta el tamaño para mayor legibilidad */
+  font-weight: 600; /* Resalta el texto */
+  color: #c2465d;
+  background: rgba(241, 219, 219, 0.9); /* Fondo degradado suave */
+  padding: 15px 25px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  text-align: center;
+  transition: transform 0.2s ease-in-out, background 0.3s ease;
+}
+
+#counter:hover {
+  transform: scale(1.02);
+  background: linear-gradient(135deg, rgba(255,255,255,1), rgba(252,236,230,1));
+}
+    .flipdown {
+      margin: auto;
+      width: 600px;
+      margin-top: 30px;
+    }
+    @media (max-width: 550px) {
+      .count-down {
+        width: 100%;
+      }
+      /* Si se utiliza un título, ajustar su tamaño:
+      .count-down h1 {
+        font-size: 2.5em;
+      }
+      */
+    }
+  </style>
+</head>
+<body>
+  <div class="count-down">
+    <!-- Contador "Count Up": tiempo transcurrido desde el inicio -->
+    <div id="counter"></div>
+    <!-- Cuenta regresiva con FlipDown para el próximo aniversario mensual -->
+    <div class="flipdown" id="flipdown"></div>
+  </div>
+
+  <!-- Incluimos la librería FlipDown -->
+  <script src="https://pbutcher.uk/flipdown/js/flipdown/flipdown.js"></script>
+  
+  <script>
+    // Fecha de inicio del aniversario: 12 de enero de 2025 a las 5:30
+    const startDate = new Date("2025-01-12T05:30:00");
+
+    /* =========================================
+       Función para calcular la diferencia en años, meses y días
+       ========================================= */
+    function dateDiff(start, end) {
+      let diffYears = end.getFullYear() - start.getFullYear();
+      let diffMonths = end.getMonth() - start.getMonth();
+      let diffDays = end.getDate() - start.getDate();
+
+      // Si los días son negativos, resta un mes y suma los días del mes anterior
+      if (diffDays < 0) {
+        diffMonths--;
+        const previousMonth = new Date(end.getFullYear(), end.getMonth(), 0);
+        diffDays += previousMonth.getDate();
+      }
+
+      // Si los meses son negativos, resta un año y suma 12 meses
+      if (diffMonths < 0) {
+        diffYears--;
+        diffMonths += 12;
+      }
+      return { years: diffYears, months: diffMonths, days: diffDays };
+    }
+
+    /* =========================================
+       Contador "Count Up" (tiempo transcurrido) de forma dinámica
+       ========================================= */
+    function updateCounter() {
+      const now = new Date();
+      const diff = dateDiff(startDate, now);
+      let parts = [];
+      
+      // Solo mostrar "años" si es mayor a 0
+      if(diff.years > 0) {
+         parts.push(diff.years + " " + (diff.years === 1 ? "año" : "años"));
+      }
+      // Solo mostrar "meses" si es mayor a 0
+      if(diff.months > 0) {
+         parts.push(diff.months + " " + (diff.months === 1 ? "mes" : "meses"));
+      }
+      // Mostrar los días siempre, o al menos si no se muestra nada más
+      if(diff.days > 0 || parts.length === 0) {
+         parts.push(diff.days + " " + (diff.days === 1 ? "día" : "días"));
+      }
+      
+      const counterText = "Llevamos juntos: " + parts.join(", ") + ".";
+      document.getElementById("counter").textContent = counterText;
+    }
+    
+    // Actualizamos el contador cada segundo (aunque solo varía al cambiar el día)
+    setInterval(updateCounter, 1000);
+    updateCounter();
+
+    /* =========================================
+       Cuenta regresiva con FlipDown (próximo aniversario mensual)
+       ========================================= */
+    function getNextMonthlyAnniversary(startDate) {
+      const now = new Date();
+      // Creamos el "aniversario" para este mes usando el día y la hora de startDate
+      let anniversary = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        startDate.getDate(),
+        startDate.getHours(),
+        startDate.getMinutes(),
+        startDate.getSeconds()
+      );
+      // Si ya pasó el "aniversario" de este mes, usamos el siguiente mes
+      if (now >= anniversary) {
+        anniversary = new Date(
+          now.getFullYear(),
+          now.getMonth() + 1,  // El objeto Date ajusta automáticamente el año si es necesario
+          startDate.getDate(),
+          startDate.getHours(),
+          startDate.getMinutes(),
+          startDate.getSeconds()
+        );
+      }
+      return anniversary;
+    }
+
+    const nextMonthlyAnniversary = getNextMonthlyAnniversary(startDate);
+    const nextMonthlyAnniversaryTimestamp = Math.floor(nextMonthlyAnniversary.getTime() / 1000);
+
+    // Inicializamos FlipDown para contar regresivamente hasta el próximo aniversario mensual
+    new FlipDown(nextMonthlyAnniversaryTimestamp)
+      .start()
+      .ifEnded(() => {
+        document.querySelector(".flipdown").innerHTML = `<h2>¡Feliz Aniversario Mensual!</h2>`;
+      });
+  </script>
+</body>
+</html>
