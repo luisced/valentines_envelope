@@ -1,12 +1,12 @@
 import { HomePage } from "../pages/HomePage";
-import { HeartPage } from "../pages/HeartPage";
+import { ILoveYouPage} from "../pages/ILoveYouPage"
 
 export function startRouter() {
   const path = window.location.pathname;
 
   if (path === "/") {
     HomePage();
-  } else if (path === "/heart") {
-    HeartPage();
+  } else if (path === "/iloveyou") {
+    ILoveYouPage();
   }
 }
