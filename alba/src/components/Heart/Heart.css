@@ -1,7 +1,11 @@
 svg {
     overflow: visible;
-    top: 10vh;
     position: fixed;
+    top: 5vh;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    height: auto;
 }
 
 svg path#line {
