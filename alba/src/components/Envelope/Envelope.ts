@@ -1,11 +1,9 @@
 import "./Envelope.css";
-import { Candlelight } from "../Candlelight/Candlelight";
 
-export function Envelope() {
-  // Create the envelope container
+export function Envelope(): HTMLElement {
   const container = document.createElement("div");
+  container.classList.add("container");
   container.innerHTML = `
-    <div class="container">
       <div class="envelope-wrapper">
         <div class="envelope">
           <div class="letter">
@@ -23,16 +21,8 @@ export function Envelope() {
           <button class="btn no-btn">No</button>
         </div>
       </div>
-    </div>
   `;
 
-  // Append the envelope to the body
-  document.body.appendChild(container);
-
-  // Initialize Candlelight effect
-  Candlelight();
-
-  // Select elements for interactivity
   const wrapper = container.querySelector(".envelope-wrapper")!;
   const letter = container.querySelector(".letter")!;
   const heart = container.querySelector(".heart")!;
@@ -56,7 +46,7 @@ export function Envelope() {
     }
   });
 
-  // Bounce animation on click
+  // Bounce animation
   wrapper.addEventListener("click", (e) => {
     if (!e.target!.closest(".btn") && !e.target!.closest(".heart")) {
       wrapper.classList.add("bounce");
@@ -71,15 +61,13 @@ export function Envelope() {
     noBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
   }
 
-  function resetNoButton() {
-    noBtn.style.transform = "translate(0, 0)";
-  }
-
   noBtn.addEventListener("mouseover", moveNoButton);
-  noBtn.addEventListener("mouseout", resetNoButton);
+  noBtn.addEventListener("mouseout", () => {
+    noBtn.style.transform = "translate(0, 0)";
+  });
 
   // NO button sad GIF
-  function showGif() {
+  noBtn.addEventListener("click", () => {
     document.body.innerHTML = "";
     const img = document.createElement("img");
     img.src = "/perrito_triste.gif";
@@ -91,12 +79,12 @@ export function Envelope() {
     img.style.maxWidth = "100%";
     img.style.height = "auto";
     document.body.appendChild(img);
-  }
-
-  noBtn.addEventListener("click", showGif);
+  });
 
   // YES button redirect
   yesBtn.addEventListener("click", () => {
     window.location.href = "/heart";
   });
+
+  return container;
 }

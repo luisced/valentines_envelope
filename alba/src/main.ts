@@ -1,7 +1,7 @@
-import { Envelope } from "./components/Envelope/Envelope";
-import { Heart } from "./components/Heart/Heart"
+import { Candlelight } from "./components/Candlelight/Candlelight"
+import { startRouter } from "./router/router";
 
 document.addEventListener("DOMContentLoaded", () => {
-  Envelope();
-  Heart();
+  Candlelight();
+  startRouter();
 });

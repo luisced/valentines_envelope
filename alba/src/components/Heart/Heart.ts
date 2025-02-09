@@ -1,6 +1,6 @@
 import "./Heart.css";
 
-export function Heart() {
+export function Heart(): HTMLElement {
   // Create the heart SVG container
   const heartContainer = document.createElement("div");
   heartContainer.innerHTML = `
@@ -10,6 +10,5 @@ export function Heart() {
     </svg>
   `;
 
-  // Append the heart animation to the body
-  document.body.appendChild(heartContainer);
+  return heartContainer;
 }

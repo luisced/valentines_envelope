@@ -17,7 +17,6 @@ svg {
     position: fixed;
 }
 
-/* Animation for the heart path */
 svg path#line {
   fill: none;
   stroke: #e00000;
@@ -30,7 +29,6 @@ svg path#line {
   animation: dash 4s linear infinite;
 }
 
-/* Animation for the blinking heart */
 svg path#heart {
   transform-origin: 50% 50%;
   animation: blink 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
@@ -52,7 +50,7 @@ svg path#heart {
   }
 }
 
-/* Heart blinking animation */
+/* Revised blink animation */
 @keyframes blink {
   0% {
     opacity: 0;
@@ -81,4 +79,3 @@ svg path#heart {
     opacity: 0;
     transform: scale(0);
   }
-}
