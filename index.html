@@ -20,7 +20,6 @@
       --envelope-width: 350px;
       --envelope-height: 250px;
     }
-    /* Global resets */
     *, *::before, *::after {
       box-sizing: border-box;
     }
@@ -33,6 +32,7 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
+      transition: opacity 0.5s ease;
     }
     main {
       width: 100%;
@@ -48,7 +48,7 @@
       position: relative;
       width: var(--envelope-width);
       height: var(--envelope-height);
-      transition: transform 0.3s ease;
+      transition: transform 0.3s ease, opacity 0.5s ease;
     }
     .envelope-wrapper:hover {
       transform: scale(1.02);
@@ -58,7 +58,6 @@
       width: 100%;
       height: 100%;
     }
-    /* Envelope flap and cover */
     .envelope::before {
       content: "";
       position: absolute;
@@ -81,7 +80,6 @@
       border-bottom: calc(var(--envelope-height) * 0.48) solid var(--envelope-cover);
       border-left: calc(var(--envelope-width) / 2) solid var(--envelope-cover);
     }
-    /* Letter styles */
     .letter {
       position: absolute;
       right: 20%;
@@ -111,7 +109,6 @@
       margin-top: 1rem;
       font-size: 0.9rem;
     }
-    /* Heart icon (interactive element) */
     .heart {
       position: absolute;
       top: 50%;
@@ -143,7 +140,6 @@
     .heart:hover {
       filter: brightness(1.1);
     }
-    /* Opening animation (flap state) */
     .flap .envelope::before {
       transform: rotateX(180deg);
       z-index: 0;
@@ -157,7 +153,6 @@
       transform: rotate(90deg);
       transition-delay: 0.4s;
     }
-    /* Final state: envelope parts vanish and letter enlarges further */
     .final .envelope::before,
     .final .envelope::after,
     .final .heart,
@@ -170,7 +165,6 @@
       bottom: 20px;
       transition: transform 0.5s ease, bottom 0.5s ease;
     }
-    /* Stamp styles */
     .stamp {
       position: absolute;
       bottom: 10px;
@@ -180,7 +174,6 @@
       z-index: 5;
       transition: opacity 0.5s ease;
     }
-    /* Buttons container */
     .buttons-container {
       position: absolute;
       left: 50%;
@@ -223,7 +216,6 @@
         transform: translate(-50%, 0);
       }
     }
-    /* Responsive adjustments */
     @media (max-width: 480px) {
       :root {
         --envelope-width: 300px;
@@ -258,12 +250,8 @@
           <div class="letter">
             <div class="text">
               <strong>Querida Albita,</strong>
-              <p>
-               ¿Quieres ser mi San Valentín?
-              </p>
-              <p class="sincerely">
-                Con Amor, Luis.
-              </p>
+              <p>¿Quieres ser mi San Valentín?</p>
+              <p class="sincerely">Con Amor, Luis.</p>
             </div>
           </div>
         </div>
@@ -276,112 +264,85 @@
       </div>
     </div>
   </main>
+  
   <script>
     // Select elements for state control
     const wrapper = document.querySelector('.envelope-wrapper');
     const letter = document.querySelector('.letter');
     const heart = document.querySelector('.heart');
     const noBtn = document.querySelector('.no-btn');
-  
-    // Touch device detection
-    const isTouchDevice = 'ontouchstart' in window || 
-                          (navigator.maxTouchPoints > 0) || 
-                          (navigator.msMaxTouchPoints > 0);
-  
-    // Function to move the No button randomly
-    function moveNoButton() {
-      const moveX = Math.random() * 100 - 50;
-      const moveY = Math.random() * 100 - 50;
-      noBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
-    }
-  
-    // Function to reset the No button position
-    function resetNoButton() {
-      noBtn.style.transform = 'translate(0, 0)';
-    }
-  
-    // Add event listeners based on device type
-    if (isTouchDevice) {
-      // Mobile touch events
-      noBtn.addEventListener('touchstart', (e) => {
-        e.preventDefault(); // Prevent default touch behavior
-        moveNoButton();
-      });
-      noBtn.addEventListener('touchend', resetNoButton);
-      noBtn.addEventListener('touchcancel', resetNoButton);
-    } else {
-      // Desktop hover events
-      noBtn.addEventListener('mouseover', moveNoButton);
-      noBtn.addEventListener('mouseout', resetNoButton);
-    }
-  
-    // Function to add the final state after the letter pops out
-    function addFinalState() {
-      if (!wrapper.classList.contains('final')) {
-        wrapper.classList.add('final');
-        // Add slight delay for button animation
-        setTimeout(() => {
-          document.querySelector('.buttons-container').style.display = 'flex';
-        }, 500);
-      }
-    }
-  
-    // Function to remove the final state and then remove the flap state
-    function removeOpenState() {
-      if (wrapper.classList.contains('final')) {
-        wrapper.classList.remove('final');
-        // Wait for the letter's reverse transition to finish before removing the flap
-        letter.addEventListener('transitionend', function handler(e) {
-          if (e.propertyName === 'transform') {
-            wrapper.classList.remove('flap');
-            letter.removeEventListener('transitionend', handler);
-          }
-        });
-      }
-    }
-  
-    // If not open, clicking the heart opens the envelope.
-    heart.addEventListener('click', () => {
-      if (!wrapper.classList.contains('flap')) {
-        wrapper.classList.add('flap');
-        // After the letter pops out (transform transition ends), add the final state.
-        letter.addEventListener('transitionend', function handler(e) {
-          if (e.propertyName === 'transform' && !wrapper.classList.contains('final')) {
-            addFinalState();
-            letter.removeEventListener('transitionend', handler);
-          }
-        });
-      }
-    });
-  
-    // Add button event listener for the yes button
-    document.querySelector('.yes-btn').addEventListener('click', () => {
-      alert('Hello World my name');
-      // Add any additional celebration animations here
-    });
-  
-    // Add event listener for the no button: if clicked, clear the screen and show perrito_triste.gif
-    noBtn.addEventListener('click', () => {
-      // Clear the entire page content
+    const yesBtn = document.querySelector('.yes-btn');
+
+    // ------------------- NO Button (Show GIF) -------------------
+    function showGif() {
       document.body.innerHTML = '';
-  
-      // Create an image element for perrito_triste.gif
       const img = document.createElement('img');
       img.src = 'perrito_triste.gif';
       img.alt = 'Perrito triste';
-  
-      // Style the image to be centered on the screen
       img.style.position = 'absolute';
       img.style.top = '50%';
       img.style.left = '50%';
       img.style.transform = 'translate(-50%, -50%)';
       img.style.maxWidth = '100%';
       img.style.height = 'auto';
-  
-      // Append the image to the body
       document.body.appendChild(img);
+    }
+
+    // ------------------- YES Button (Open New Page with SVG) -------------------
+    yesBtn.addEventListener('click', () => {
+      // Redirect to another page where the SVG is displayed.
+      window.location.href = "svg.html";
+    });
+
+    // ------------------- NO Button (Evasive Behavior) -------------------
+    const isTouchDevice = 'ontouchstart' in window ||
+                          (navigator.maxTouchPoints > 0) ||
+                          (navigator.msMaxTouchPoints > 0);
+    function moveNoButton() {
+      const moveX = Math.random() * 100 - 50;
+      const moveY = Math.random() * 100 - 50;
+      noBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
+    }
+    function resetNoButton() {
+      noBtn.style.transform = 'translate(0, 0)';
+    }
+    if (isTouchDevice) {
+      let lastTap = 0;
+      noBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        moveNoButton();
+      });
+      noBtn.addEventListener('touchend', (e) => {
+        resetNoButton();
+        const currentTime = Date.now();
+        const tapInterval = currentTime - lastTap;
+        if (tapInterval < 300 && tapInterval > 0) {
+          showGif();
+        }
+        lastTap = currentTime;
+      });
+      noBtn.addEventListener('touchcancel', resetNoButton);
+    } else {
+      noBtn.addEventListener('mouseover', moveNoButton);
+      noBtn.addEventListener('mouseout', resetNoButton);
+      noBtn.addEventListener('click', showGif);
+    }
+
+    // ------------------- Envelope Opening Logic -------------------
+    heart.addEventListener('click', () => {
+      if (!wrapper.classList.contains('flap')) {
+        wrapper.classList.add('flap');
+        letter.addEventListener('transitionend', function handler(e) {
+          if (e.propertyName === 'transform' && !wrapper.classList.contains('final')) {
+            wrapper.classList.add('final');
+            setTimeout(() => {
+              document.querySelector('.buttons-container').style.display = 'flex';
+            }, 500);
+            letter.removeEventListener('transitionend', handler);
+          }
+        });
+      }
     });
   </script>
-  
 </body>
 </html>
