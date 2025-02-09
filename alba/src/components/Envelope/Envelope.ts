@@ -23,22 +23,23 @@ export function Envelope(): HTMLElement {
       </div>
   `;
 
-  const wrapper = container.querySelector(".envelope-wrapper")!;
-  const letter = container.querySelector(".letter")!;
-  const heart = container.querySelector(".heart")!;
-  const noBtn = container.querySelector(".no-btn")!;
-  const yesBtn = container.querySelector(".yes-btn")!;
+  const wrapper = container.querySelector(".envelope-wrapper") as HTMLElement;
+  const letter = container.querySelector(".letter") as HTMLElement;
+  const heart = container.querySelector(".heart") as HTMLElement;
+  const noBtn = container.querySelector(".no-btn") as HTMLButtonElement;
+  const yesBtn = container.querySelector(".yes-btn") as HTMLButtonElement;
 
   // Envelope opening logic
   heart.addEventListener("click", () => {
     if (!wrapper.classList.contains("flap")) {
       wrapper.classList.add("flap");
 
-      letter.addEventListener("transitionend", function handler(e) {
+      letter.addEventListener("transitionend", function handler(e: TransitionEvent) {
         if (e.propertyName === "transform" && !wrapper.classList.contains("final")) {
           wrapper.classList.add("final");
           setTimeout(() => {
-            container.querySelector(".buttons-container")!.style.display = "flex";
+            const buttonsContainer = container.querySelector(".buttons-container") as HTMLElement;
+            buttonsContainer.style.display = "flex";
           }, 500);
           letter.removeEventListener("transitionend", handler);
         }
@@ -47,8 +48,9 @@ export function Envelope(): HTMLElement {
   });
 
   // Bounce animation
-  wrapper.addEventListener("click", (e) => {
-    if (!e.target!.closest(".btn") && !e.target!.closest(".heart")) {
+  wrapper.addEventListener("click", (e: MouseEvent) => {
+    const target = e.target as HTMLElement;
+    if (!target.closest(".btn") && !target.closest(".heart")) {
       wrapper.classList.add("bounce");
       setTimeout(() => wrapper.classList.remove("bounce"), 600);
     }
@@ -61,16 +63,26 @@ export function Envelope(): HTMLElement {
     noBtn.style.transform = `translate(${moveX}px, ${moveY}px)`;
   }
 
-  noBtn.addEventListener("mouseover", moveNoButton);
-  noBtn.addEventListener("mouseout", () => {
+  function resetNoButton() {
     noBtn.style.transform = "translate(0, 0)";
+  }
+
+  noBtn.addEventListener("mouseover", moveNoButton);
+  noBtn.addEventListener("mouseout", resetNoButton);
+  noBtn.addEventListener("touchstart", (e: TouchEvent) => {
+    e.preventDefault(); // Prevent default touch behavior
+    moveNoButton();
   });
+  noBtn.addEventListener("touchend", resetNoButton);
 
   // NO button redirect to ErrorPage
-  noBtn.addEventListener("click", () => {
-    window.history.pushState({}, "", "/error");
-    const event = new Event("popstate");
-    window.dispatchEvent(event);
+  noBtn.addEventListener("pointerdown", (e: PointerEvent) => {
+    e.preventDefault(); // Prevent default behavior
+    if (e.pointerType === 'mouse') { // Only redirect on actual clicks, not touch events
+      window.history.pushState({}, "", "/error");
+      const event = new Event("popstate");
+      window.dispatchEvent(event);
+    }
   });
 
   // YES button redirect
