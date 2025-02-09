@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Envelope</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap" rel="stylesheet">
+
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Amatic+SC:wght@400;700&display=swap');
+
     :root {
       /* Color and sizing variables */
       --primary: white;
@@ -27,7 +27,7 @@
       margin: 0;
       padding: 0;
       background: var(--bg-color);
-      font-family: sans-serif;
+      font-family: 'Amatic SC', cursive;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -36,6 +36,23 @@
     }
     main {
       width: 100%;
+    }
+    .candlelight {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, var(--bg-color), rgba(252, 134, 134, 0.37));
+      animation: flicker 4s infinite;
+      pointer-events: none;
+      z-index: -1;
+    }
+    @keyframes flicker {
+      0%, 100% { opacity: 0.8; }
+      25% { opacity: 0.6; }
+      50% { opacity: 0.7; }
+      75% { opacity: 0.5; }
     }
     .container {
       display: grid;
@@ -52,6 +69,17 @@
     }
     .envelope-wrapper:hover {
       transform: scale(1.02);
+    }
+    /* Bounce animation */
+    @keyframes bounce {
+      0%   { transform: scale(1); }
+      30%  { transform: scale(1.1); }
+      50%  { transform: scale(0.95); }
+      70%  { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+    .bounce {
+      animation: bounce 0.6s ease;
     }
     .envelope {
       position: relative;
@@ -95,7 +123,6 @@
       cursor: pointer;
     }
     .letter .text {
-      font-family: "Caveat", cursive, sans-serif;
       font-size: 1rem;
       line-height: 1.4;
       text-align: justify;
@@ -187,8 +214,8 @@
       padding: 10px 30px;
       border: none;
       border-radius: 20px;
-      font-family: "Caveat", cursive;
       font-size: 1.5rem;
+      font-family: 'Amatic SC', cursive;
       cursor: pointer;
       transition: all 0.3s ease;
       box-shadow: 0 2px 5px rgba(0,0,0,0.2);
@@ -244,6 +271,7 @@
 </head>
 <body>
   <main>
+    <div class="candlelight"></div>
     <div class="container">
       <div class="envelope-wrapper" role="region" aria-label="Envelope">
         <div class="envelope">
@@ -343,6 +371,20 @@
         });
       }
     });
+
+    // ------------------- Bounce Interaction on Envelope Tap -------------------
+    function bounceEnvelope(e) {
+      // Avoid interfering with interactive elements (buttons or heart)
+      if (e.target.closest('.btn') || e.target.closest('.heart')) {
+        return;
+      }
+      wrapper.classList.add('bounce');
+      wrapper.addEventListener('animationend', () => {
+        wrapper.classList.remove('bounce');
+      }, { once: true });
+    }
+    // Attach bounce to envelope-wrapper click
+    wrapper.addEventListener('click', bounceEnvelope);
   </script>
 </body>
 </html>
