@@ -15,7 +15,7 @@ export function Envelope(): HTMLElement {
           </div>
         </div>
         <div class="heart"></div>
-        <img src="/stamp.png" alt="Stamp" class="stamp">
+        <img src="/stamp.webp" alt="Stamp" class="stamp">
         <div class="buttons-container">
           <button class="btn yes-btn">¡Sí!</button>
           <button class="btn no-btn">No</button>

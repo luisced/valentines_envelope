@@ -15,9 +15,9 @@ export function ErrorPage() {
       align-items: center;
       justify-content: center;
       height: 100vh;
-      background-color: var(--bg-color);
       padding: 20px;
       box-sizing: border-box;
+      background-color: transparent;
     }
     .error-page img {
       max-width: 100%;
