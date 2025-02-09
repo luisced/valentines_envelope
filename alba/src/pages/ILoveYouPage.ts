@@ -1,18 +1,23 @@
 import { Heart } from "../components/Heart/Heart";
+import { Countdown } from "../components/CountDown/Countdown";
+import './ILoveYouPage.css';
 
 export function ILoveYouPage() {
   document.body.innerHTML = "";
   const pageContainer = document.createElement("div");
-  pageContainer.style.cssText = `
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    min-height: 100vh;
-    width: 100%;
-    overflow: hidden;
-  `;
-  
+  pageContainer.className = "i-love-you-page";
+
+  const heartContainer = document.createElement("div");
+  heartContainer.className = "heart-container";
   const heartElement = Heart();
-  pageContainer.appendChild(heartElement);
+  heartContainer.appendChild(heartElement);
+  pageContainer.appendChild(heartContainer);
+
+  const countdownContainer = document.createElement("div");
+  countdownContainer.className = "countdown-wrapper";
+  const countdownElement = new Countdown();
+  countdownContainer.appendChild(countdownElement.render());
+  pageContainer.appendChild(countdownContainer);
+
   document.body.appendChild(pageContainer);
 }
