@@ -1,0 +1,84 @@
+:root {
+    --primary: white;
+    --bg-color: rgb(253, 246, 236);
+}
+
+body {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--bg-color);
+}
+
+svg {
+    overflow: visible;
+    top: 10vh;
+    position: fixed;
+}
+
+/* Animation for the heart path */
+svg path#line {
+  fill: none;
+  stroke: #e00000;
+  stroke-width: 2;
+  stroke-linecap: butt;
+  stroke-linejoin: round;
+  stroke-miterlimit: 4;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: dash 4s linear infinite;
+}
+
+/* Animation for the blinking heart */
+svg path#heart {
+  transform-origin: 50% 50%;
+  animation: blink 4s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+/* Smoother dash animation */
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 1;
+    opacity: 1;
+  }
+  95% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+}
+
+/* Heart blinking animation */
+@keyframes blink {
+  0% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  60% {
+    opacity: 0;
+    transform: scale(0);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+  75% {
+    transform: scale(1);
+  }
+  85% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  95% {
+    transform: scale(0.9);
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0);
+  }
+}
