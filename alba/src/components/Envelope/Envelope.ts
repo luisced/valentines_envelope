@@ -66,19 +66,11 @@ export function Envelope(): HTMLElement {
     noBtn.style.transform = "translate(0, 0)";
   });
 
-  // NO button sad GIF
+  // NO button redirect to ErrorPage
   noBtn.addEventListener("click", () => {
-    document.body.innerHTML = "";
-    const img = document.createElement("img");
-    img.src = "/perrito_triste.gif";
-    img.alt = "Perrito triste";
-    img.style.position = "absolute";
-    img.style.top = "50%";
-    img.style.left = "50%";
-    img.style.transform = "translate(-50%, -50%)";
-    img.style.maxWidth = "100%";
-    img.style.height = "auto";
-    document.body.appendChild(img);
+    window.history.pushState({}, "", "/error");
+    const event = new Event("popstate");
+    window.dispatchEvent(event);
   });
 
   // YES button redirect

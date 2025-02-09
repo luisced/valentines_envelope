@@ -1,9 +1,9 @@
-export function ErrorPage(container: HTMLElement) {
+export function ErrorPage() {
+  const container = document.createElement('div');
+  container.className = 'error-page';
   container.innerHTML = `
-    <div class="error-page">
-      <img src="/perrito_triste.gif" alt="Sad puppy">
-      <button onclick="window.history.back()">Go Back</button>
-    </div>
+    <img src="/perrito_triste.gif" alt="Sad puppy">
+    <button id="analeButton">Añale</button>
   `;
 
   // Add some basic styles
@@ -37,4 +37,16 @@ export function ErrorPage(container: HTMLElement) {
     }
   `;
   document.head.appendChild(style);
+
+  // Add click event listener to the button
+  const analeButton = container.querySelector('#analeButton');
+  if (analeButton) {
+    analeButton.addEventListener('click', () => {
+      window.history.pushState({}, '', '/');
+      const event = new Event('popstate');
+      window.dispatchEvent(event);
+    });
+  }
+
+  return container;
 }
