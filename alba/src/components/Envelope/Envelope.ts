@@ -75,7 +75,27 @@ export function Envelope(): HTMLElement {
   });
   noBtn.addEventListener("touchend", resetNoButton);
 
-  // NO button redirect to ErrorPage
+  // Double-tap detection for NO button (mobile)
+  let lastTapTime = 0;
+
+  noBtn.addEventListener("touchstart", (e: TouchEvent) => {
+    e.preventDefault(); // Prevent default touch behavior
+    moveNoButton();
+
+    // Detect double tap
+    const currentTime = new Date().getTime();
+    const timeDiff = currentTime - lastTapTime;
+
+    if (timeDiff < 300 && timeDiff > 0) { // If second tap is within 300ms
+      window.history.pushState({}, "", "/error");
+      const event = new Event("popstate");
+      window.dispatchEvent(event);
+    }
+
+    lastTapTime = currentTime;
+  });
+
+  // NO button redirect to ErrorPage (Desktop click)
   noBtn.addEventListener("pointerdown", (e: PointerEvent) => {
     e.preventDefault(); // Prevent default behavior
     if (e.pointerType === 'mouse') { // Only redirect on actual clicks, not touch events
