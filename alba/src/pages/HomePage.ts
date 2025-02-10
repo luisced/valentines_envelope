@@ -1,4 +1,3 @@
-import { Candlelight } from "../components/Candlelight";
 import { Envelope } from "../components/Envelope/Envelope";
 
 export function HomePage() {

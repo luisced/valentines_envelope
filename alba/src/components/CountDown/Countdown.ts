@@ -19,7 +19,7 @@ export class Countdown {
         <li><span id="minutes"></span>minutos</li>
         <li><span id="seconds"></span>segundos</li>
       </ul>
-      <div class="emoji">
+      <div class="emoji" style="display: none;">
         <span>Te amooo ❤️😊</span>
       </div>
     `;
@@ -37,15 +37,18 @@ export class Countdown {
       const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
       const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
+      // Update the countdown spans (textContent exists on Node, so these are fine)
       this.element.querySelector('#days')!.textContent = days.toString();
       this.element.querySelector('#hours')!.textContent = hours.toString();
       this.element.querySelector('#minutes')!.textContent = minutes.toString();
       this.element.querySelector('#seconds')!.textContent = seconds.toString();
 
+      // When countdown is over, update the display and restart after 5 seconds
       if (distance < 0) {
         clearInterval(this.intervalId!);
-        this.element.querySelector('ul')!.style.display = 'none';
-        this.element.querySelector('.emoji')!.style.display = 'block';
+        // Cast querySelector results to HTMLElement so TypeScript recognizes the style property.
+        (this.element.querySelector('ul') as HTMLElement).style.display = 'none';
+        (this.element.querySelector('.emoji') as HTMLElement).style.display = 'block';
         setTimeout(() => this.restartCountdown(), 5000);
       }
     }, 1000);
@@ -54,7 +57,7 @@ export class Countdown {
   private getNextMonthlyAnniversary(): Date {
     const now = new Date();
     const nextAnniversary = new Date(now.getFullYear(), now.getMonth(), 12, 17, 30, 0);
-    
+
     if (now > nextAnniversary) {
       nextAnniversary.setMonth(nextAnniversary.getMonth() + 1);
     }
@@ -66,8 +69,8 @@ export class Countdown {
     if (this.intervalId) {
       clearInterval(this.intervalId);
     }
-    this.element.querySelector('ul')!.style.display = 'flex';
-    this.element.querySelector('.emoji')!.style.display = 'none';
+    (this.element.querySelector('ul') as HTMLElement).style.display = 'flex';
+    (this.element.querySelector('.emoji') as HTMLElement).style.display = 'none';
     this.updateCountdown();
   }
 
